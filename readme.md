@@ -78,7 +78,7 @@ The project is also configured for orchestration using Kubernetes, with the foll
    '''bash
    kubectl get pods
 
-4. Once the pods are running, access the Spring PetClinic application via the Kubernetes service at the assigned external IP or port-forwarding (depending on your setup).
+5. Once the pods are running, access the Spring PetClinic application via the Kubernetes service at the assigned external IP or port-forwarding (depending on your setup).
    Example:
    '''bash
    kubectl port-forward svc/spring-petclinic 8080:8080
