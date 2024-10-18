@@ -48,7 +48,7 @@ The project is also configured for orchestration using Kubernetes, with the foll
 - **Persistent Volume (PV) and Persistent Volume Claim (PVC)**: Ensures data persistence for the MySQL database.
 - **Deployments**: Separate deployments for the Spring PetClinic application and the MySQL database.
 
-**Steps to Deploy on Kubernetes**
+**Steps to Deploy on Kubernetes**:
 
 1. Build and push the Docker image to a container registry (if necessary).
    ```bash
@@ -56,20 +56,20 @@ The project is also configured for orchestration using Kubernetes, with the foll
  
  2. Apply the Kubernetes configurations:
 
-    - Secrets:
+    - **Secrets**:
     '''bash
     kubectl apply -f k8s/secret.yml
 
-    - ConfigMap:
+    - **ConfigMap**:
     '''bash
     kubectl apply -f k8s/configmap.yml
     
-    - Persistent Volume and Persistent Volume Claim:
+    - **Persistent Volume and Persistent Volume Claim**:
     '''bash
     kubectl apply -f k8s/pv.yml
     kubectl apply -f k8s/pvc.yml
 
-    - Deployments:
+    - **Deployments**:
     '''bash
     kubectl apply -f k8s/deployment-app.yml
     kubectl apply -f k8s/deployment-mysql.yml
