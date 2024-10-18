@@ -85,3 +85,20 @@ The project is also configured for orchestration using Kubernetes, with the foll
    kubectl port-forward svc/spring-petclinic 8080:8080
 
 Access the application at http://localhost:8080.
+
+
+## Configuration Files
+
+- **Dockerfile**: Used to build the Spring PetClinic application into a Docker image.
+- **docker-compose.yml**: Defines services for local testing with Docker Compose.
+  
+### Kubernetes Files:
+- **secret.yml**: Defines Kubernetes Secrets for secure storage of sensitive data.
+- **configmap.yml**: Configures environment variables for the application.
+- **pv.yml** and **pvc.yml**: Define the Persistent Volume and Persistent Volume Claim for MySQL.
+- **deployment-app.yml** and **deployment-mysql.yml**: Define Kubernetes Deployments for the Spring PetClinic app and MySQL.
+
+## Conclusion
+
+This setup provides a robust, containerized environment for running the Spring PetClinic application locally using Docker Compose and in production-like environments using Kubernetes. The use of ConfigMaps, Secrets, and persistent storage ensures secure and reliable orchestration of the application and database.
+
