@@ -26,3 +26,5 @@ For local testing, a `docker-compose.yml` is provided, which sets up the Spring 
    ```bash
    git clone https://github.com/spring-projects/spring-petclinic.git
    cd spring-petclinic
+
+2. Build the Docker image:
