@@ -28,3 +28,13 @@ For local testing, a `docker-compose.yml` is provided, which sets up the Spring 
    cd spring-petclinic
 
 2. Build the Docker image:
+   
+   ```bash
+   docker build -t hossam136/spring-petclinic-image .
+   
+3. Run the application with Docker Compose:
+
+   ```bash
+   docker-compose up
+
+The application should be available at http://localhost:8080.
