@@ -56,31 +56,32 @@ The project is also configured for orchestration using Kubernetes, with the foll
  
  2. Apply the Kubernetes configurations:
 
-    - **Secrets**:
-    '''bash
-    kubectl apply -f k8s/secret.yml
+   - **Secrets**:
+     ```bash
+     kubectl apply -f k8s/secret.yml
 
-    - **ConfigMap**:
-    '''bash
-    kubectl apply -f k8s/configmap.yml
+   - **ConfigMap**:
+     ```bash
+     kubectl apply -f k8s/configmap.yml
     
-    - **Persistent Volume and Persistent Volume Claim**:
-    '''bash
-    kubectl apply -f k8s/pv.yml
-    kubectl apply -f k8s/pvc.yml
+   - **Persistent Volume and Persistent Volume Claim**:
+     ```bash
+     kubectl apply -f k8s/pv.yml
+     kubectl apply -f k8s/pvc.yml
 
-    - **Deployments**:
-    '''bash
-    kubectl apply -f k8s/deployment-app.yml
-    kubectl apply -f k8s/deployment-mysql.yml
+   - **Deployments**:
+     ```bash
+     kubectl apply -f k8s/deployment-app.yml
+     kubectl apply -f k8s/deployment-mysql.yml
 
 3. Verify that the pods are running:
-   '''bash
+
+   ```bash
    kubectl get pods
 
 5. Once the pods are running, access the Spring PetClinic application via the Kubernetes service at the assigned external IP or port-forwarding (depending on your setup).
    Example:
-   '''bash
+   ```bash
    kubectl port-forward svc/spring-petclinic 8080:8080
 
 Access the application at http://localhost:8080.
