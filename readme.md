@@ -38,3 +38,49 @@ For local testing, a `docker-compose.yml` is provided, which sets up the Spring 
    docker-compose up
 
 The application should be available at http://localhost:8080.
+
+### Kubernetes
+
+The project is also configured for orchestration using Kubernetes, with the following components:
+
+- **ConfigMap**: Holds environment variables for the application.
+- **Secrets**: Stores sensitive information like database credentials.
+- **Persistent Volume (PV) and Persistent Volume Claim (PVC)**: Ensures data persistence for the MySQL database.
+- **Deployments**: Separate deployments for the Spring PetClinic application and the MySQL database.
+
+**Steps to Deploy on Kubernetes**
+
+1. Build and push the Docker image to a container registry (if necessary).
+   ```bash
+   docker push hossam136/spring-petclinic-image
+ 
+ 2. Apply the Kubernetes configurations:
+
+    - Secrets:
+    '''bash
+    kubectl apply -f k8s/secret.yml
+
+    - ConfigMap:
+    '''bash
+    kubectl apply -f k8s/configmap.yml
+    
+    - Persistent Volume and Persistent Volume Claim:
+    '''bash
+    kubectl apply -f k8s/pv.yml
+    kubectl apply -f k8s/pvc.yml
+
+    - Deployments:
+    '''bash
+    kubectl apply -f k8s/deployment-app.yml
+    kubectl apply -f k8s/deployment-mysql.yml
+
+3. Verify that the pods are running:
+   '''bash
+   kubectl get pods
+
+4. Once the pods are running, access the Spring PetClinic application via the Kubernetes service at the assigned external IP or port-forwarding (depending on your setup).
+   Example:
+   '''bash
+   kubectl port-forward svc/spring-petclinic 8080:8080
+
+Access the application at http://localhost:8080.
