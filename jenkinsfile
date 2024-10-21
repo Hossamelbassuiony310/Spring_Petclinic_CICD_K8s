@@ -85,7 +85,8 @@ pipeline {
 
     always {
         // Always run this step
-        sh "docker-compose -f docker-compose-1.yml down"
+        sh "docker compose -f docker-compose-1.yml down"
+        sh "rm -rf target"
     }
 }
 
