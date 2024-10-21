@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-db-deployment
+  labels:
+    app: petclinic
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: petclinic
+  template:
+    metadata:
+      labels:
+        app: petclinic
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:9.0  # Use MySQL version 8.0
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "root"  # Optional, you can set a password or leave it empty
+        - name: MYSQL_ALLOW_EMPTY_PASSWORD
+          value: "true"
+        - name: MYSQL_USER
+          valueFrom: 
+            secretKeyRef:
+              name: secret-petclinic
+              key: mysql_user
+        - name: MYSQL_PASSWORD
+          valueFrom: 
+            secretKeyRef:
+              name: secret-petclinic
+              key: mysql_password
+        - name: MYSQL_DATABASE
+          valueFrom: 
+            secretKeyRef:
+              name: secret-petclinic
+              key: mysql_database
+        volumeMounts:
+        # - name: mysql-config
+        #   mountPath: /etc/mysql/conf.d
+        - name: petclinic-db-data
+          mountPath: /var/lib/mysql
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "200m"
+          limits:
+            memory: "512Mi"
+            cpu: "1000m"
+      volumes:
+      - name: petclinic-db-data
+        persistentVolumeClaim:
+          claimName: petclinic-db-data-claim  # Ensure this PVC exists
+      # - name: mysql-config
+      #   configMap:
+      #     name: petclinic-config  # Ensure this ConfigMap exists
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service  # Updated to match MySQL
+spec:
+  selector:
+    app: petclinic  # Match the label from the deployment
+  ports:
+    - protocol: TCP
+      port: 3306  # Correct port for MySQL
+      targetPort: 3306

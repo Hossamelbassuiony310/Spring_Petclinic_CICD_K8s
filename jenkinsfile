@@ -1,0 +1,92 @@
+pipeline {
+    agent any
+
+    tools {
+        jdk 'jdk17.0.12'
+        maven 'maven-3.8.7'
+    }
+
+    stages {
+
+        stage('Git CheckOut') {
+            steps {
+                git branch: 'main', credentialsId: 'Github', poll: false, url: 'https://github.com/Hossamelbassuiony310/Spring_Petclinic_CICD_K8s.git'
+            }
+        }
+
+        stage('Build Source Code') {
+            steps {
+                sh "mvn clean compile"
+            }
+        }
+
+        stage('Test unit test cases') {
+            steps {
+                sh "mvn test"
+            }
+        }
+
+        stage('Build the package') {
+            steps {
+                sh "mvn package"
+            }
+        }
+
+        stage('Build & tag the Docker Image') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'pass', usernameVariable: 'user')]) {
+                    sh "docker login -u ${user} -p ${pass}"
+                    sh "docker build -t ${user}/spring-petclinic-image:${env.BUILD_NUMBER} ."
+                }
+                sh "docker images"
+            }
+        }
+
+        stage('Push the Docker Image to Docker Hub') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'pass', usernameVariable: 'user')]) {
+                        sh "docker push ${user}/spring-petclinic-image:${env.BUILD_NUMBER}"
+                    }
+                }
+            }
+        }
+
+        stage('Run Docker compose') {
+            steps {
+                sh "docker compose -f docker-compose-1.yml up -d"
+                sh "docker ps"
+                sh "curl http://localhost:8080/"
+            }
+        }
+
+    }
+
+    post { 
+    success { 
+        mail bcc: '', 
+            body: "Build and test were successful for ${env.JOB_NAME} #${env.BUILD_NUMBER}\nCheck the details at: ${env.BUILD_URL}", 
+            cc: '', 
+            from: '', 
+            replyTo: '', 
+            subject: "Success: Build and Test for Pipeline ${env.JOB_NAME} #${env.BUILD_NUMBER}", 
+            to: 'hossambesso7@gmail.com'
+    }
+
+    failure {
+        mail bcc: '', 
+            body: "Build and test failed for ${env.JOB_NAME} #${env.BUILD_NUMBER}\nCheck the details at: ${env.BUILD_URL}", 
+            cc: '', 
+            from: '', 
+            replyTo: '', 
+            subject: "Failure: Build and Test for Pipeline ${env.JOB_NAME} #${env.BUILD_NUMBER}", 
+            to: 'hossambesso7@gmail.com'
+    }
+
+    always {
+        // Always run this step
+        sh "docker-compose -f docker-compose-1.yml down"
+    }
+}
+
+}
