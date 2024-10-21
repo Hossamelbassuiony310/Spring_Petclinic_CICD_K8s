@@ -1,0 +1,16 @@
+- name: Install Docker and Jenkins and java and maven
+  hosts: all
+  gather_facts: true
+  become: yes  # Use become to escalate privileges
+  roles:
+    - role: jenkins
+      tags: j
+
+    - role: docker
+      tags: Docker
+
+    - role: JDK
+      tags: jdk
+
+    - role: maven
+      tags: mvn

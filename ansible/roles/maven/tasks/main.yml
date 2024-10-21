@@ -1,0 +1,39 @@
+---
+# tasks file for maven installation
+
+# Install Maven in Ubuntu
+- name: Download Apache Maven on Ubuntu
+  ansible.builtin.command:
+    cmd: wget -O /tmp/apache-maven-3.6.3-bin.tar.gz https://archive.apache.org/dist/maven/binaries/apache-maven-3.6.3-bin.tar.gz
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: Extract Apache Maven on Ubuntu
+  ansible.builtin.command:
+    cmd: tar -xvf /tmp/apache-maven-3.6.3-bin.tar.gz -C /opt/
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: Move Maven directory on Ubuntu
+  ansible.builtin.command:
+    cmd: mv /opt/apache-maven-3.6.3 /opt/maven
+  args:
+    creates: /opt/maven
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+
+# Install Maven in CentOS
+- name: Download Apache Maven on CentOS
+  ansible.builtin.command:
+    cmd: wget -O /tmp/apache-maven-3.6.3-bin.tar.gz https://archive.apache.org/dist/maven/binaries/apache-maven-3.6.3-bin.tar.gz
+  when: ansible_facts['distribution'] == 'CentOS'
+
+- name: Extract Apache Maven on CentOS
+  ansible.builtin.command:
+    cmd: tar -xvf /tmp/apache-maven-3.6.3-bin.tar.gz -C /opt/
+  when: ansible_facts['distribution'] == 'CentOS'
+
+- name: Move Maven directory on CentOS
+  ansible.builtin.command:
+    cmd: mv /opt/apache-maven-3.6.3 /opt/maven
+  args:
+    creates: /opt/maven
+  when: ansible_facts['distribution'] == 'CentOS'
