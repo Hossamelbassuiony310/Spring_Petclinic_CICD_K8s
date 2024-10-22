@@ -1,0 +1,31 @@
+---
+# tasks file for JDK in Ubuntu
+
+- name: Update repositories cache
+  ansible.builtin.apt:
+    update_cache: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'
+  become: yes
+
+- name: Install JDK
+  ansible.builtin.apt:
+    name: default-jre
+    state: present
+  when: ansible_facts['distribution'] == 'Ubuntu'
+  become: yes
+
+# tasks file for JDK in CentOS
+
+- name: Install Yum utilities
+  ansible.builtin.yum:
+    name: yum-utils
+    state: present
+  when: ansible_facts['distribution'] == 'CentOS'
+  become: yes
+
+- name: Install JDK
+  ansible.builtin.yum:
+    name: java-1.8.0-openjdk
+    state: latest
+  when: ansible_facts['distribution'] == 'CentOS'
+  become: yes

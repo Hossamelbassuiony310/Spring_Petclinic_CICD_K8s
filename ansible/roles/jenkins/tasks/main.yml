@@ -1,0 +1,64 @@
+---
+# tasks file for jenkins
+
+# install jenkins in Ubuntu
+
+
+- name: Add Jenkins repository key and list
+  ansible.builtin.shell: |
+    wget -O /usr/share/keyrings/jenkins-keyring.asc https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+    echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/" | tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+  register: check_ubuntu_jenkins
+  when: ansible_facts['distribution'] == 'Ubuntu'
+  become: yes
+
+- name: Update repositories cache
+  ansible.builtin.apt:
+    update_cache: yes
+  when: ansible_facts['distribution'] == 'Ubuntu' and check_ubuntu_jenkins.changed
+  become: yes
+
+- name: Install Java
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - fontconfig
+    - openjdk-17-jre
+  when: ansible_facts['distribution'] == 'Ubuntu'
+  become: yes
+  notify: install_jenkins
+
+
+
+
+
+
+#install jenkins in centos
+
+
+- name: Add Jenkins repository and import GPG key
+  ansible.builtin.shell: |
+    wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+    rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+  register: check_centos_jenkins
+  when: ansible_facts['distribution'] == 'CentOS'
+  become: yes
+
+- name: Update repositories cache
+  ansible.builtin.yum:
+    update_cache: yes
+  when: ansible_facts['distribution'] == 'CentOS' and check_centos_jenkins.changed
+  become: yes
+
+- name: Install required packages
+  ansible.builtin.yum:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - fontconfig
+    - java-17-openjdk
+    - jenkins
+  notify: restart_enable_reload_daemon
+  when: ansible_facts['distribution'] == 'CentOS'
+  become: yes
