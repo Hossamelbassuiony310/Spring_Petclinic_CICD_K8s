@@ -1,6 +1,6 @@
-# Spring PetClinic with Docker, Docker Compose, and Kubernetes
+# Spring PetClinic with Docker, Docker Compose, Kubernetes, CI/CD, and Ansible
 
-This project demonstrates the deployment of the Spring PetClinic application using Docker, Docker Compose for local testing, and Kubernetes for orchestration. The setup includes persistent storage, environment configuration using ConfigMaps and Secrets, and two deployments: one for the PetClinic application and one for MySQL.
+This project demonstrates the deployment of the Spring PetClinic application using Docker, Docker Compose for local testing, and Kubernetes for orchestration. It also includes CI/CD integration with Jenkins and automation of the installation process using Ansible. The setup features persistent storage, environment configuration using ConfigMaps and Secrets, and two deployments: one for the PetClinic application and one for MySQL.
 
 ## Prerequisites
 
