@@ -19,7 +19,7 @@ A custom Docker image has been created for the Spring PetClinic application, all
 
 ### Docker Compose
 
-For local testing, a `docker-compose.yml` is provided, which sets up the Spring PetClinic application along with a MySQL database.
+For local testing, a `docker-compose-1.yml` is provided, which sets up the Spring PetClinic application along with a MySQL database.
 
 #### Steps to Run Locally
 
